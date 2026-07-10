@@ -1,2 +1,16 @@
-Hello world
-Sampravin
+pipeline {
+    agent {
+        docker {
+            image 'eclipse-temurin:21-jdk'
+        }
+    }
+
+    stages {
+        stage('Test') {
+            steps {
+                sh 'java -version'
+                sh 'javac -version'
+            }
+        }
+    }
+}
