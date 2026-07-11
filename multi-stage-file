@@ -1,0 +1,40 @@
+pipeline {
+    agent none
+
+    stages {
+
+        stage('Build Backend') {
+            agent {
+                docker {
+                    image 'maven:3.9.6-eclipse-temurin-17'
+                }
+            }
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Frontend') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                }
+            }
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+
+        stage('Database Check') {
+            agent {
+                docker {
+                    image 'mysql:8.4'
+                }
+            }
+            steps {
+                sh 'mysql --version'
+            }
+        }
+    }
+}
